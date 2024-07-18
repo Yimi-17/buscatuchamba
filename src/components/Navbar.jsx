@@ -1,13 +1,23 @@
 'use client'
 
+import { useState, useRef } from "react";
 import Link from "next/link";
-import { getServerSession } from "next-auth/next";
-//import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { authOptions } from "../app/api/auth/[...nextauth]/route";
+import { signOut, useSession } from "next-auth/react";
 
-async function Navbar() {
-  const session = await getServerSession(authOptions);
-  console.log(session);
+function Navbar() {
+  const { data: session } = useSession();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showConfirmLogout, setShowConfirmLogout] = useState(false);
+  const userMenuRef = useRef(null);
+
+  const handleLogout = () => {
+    setShowConfirmLogout(true);
+  };
+
+  const confirmLogout = () => {
+    signOut();
+    setShowConfirmLogout(false);
+  };
 
   return (
     <>
@@ -60,14 +70,14 @@ async function Navbar() {
           <div className="bg-gray-800 p-6 rounded-lg">
             <h2 className="text-xl mb-4 text-white">¿Está seguro que desea cerrar sesión?</h2>
             <div className="flex justify-end gap-4">
-              <button 
-                onClick={() => setShowConfirmLogout(false)} 
+              <button
+                onClick={() => setShowConfirmLogout(false)}
                 className="px-4 py-2 bg-gray-600 rounded hover:bg-gray-700 text-white"
               >
                 Cancelar
               </button>
-              <button 
-                onClick={confirmLogout} 
+              <button
+                onClick={confirmLogout}
                 className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 text-white"
               >
                 Confirmar
