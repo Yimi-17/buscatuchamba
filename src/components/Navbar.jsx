@@ -15,13 +15,13 @@ async function Navbar() {
         {!session?.user ? (
           <>
             <li>
-              <Link href="/">Home</Link>
+              <Link href="/">Inicio</Link>
             </li>
             <li>
-              <Link href="/auth/login">Login</Link>
+              <Link href="/auth/login">Iniciar Sesion</Link>
             </li>
             <li>
-              <Link href="/auth/register">Register</Link>
+              <Link href="/auth/register">Registrar</Link>
             </li>
           </>
         ) : (
@@ -30,7 +30,7 @@ async function Navbar() {
               <Link href="/dashboard">Dashboard</Link>
             </li>
             <li>
-              <Link href="/api/auth/signout">Logout</Link>
+              <Link href="/api/auth/signout">Cerrar Sesion</Link>
             </li>
           </>
         )}
