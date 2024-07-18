@@ -1,18 +1,19 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import db from '../../../../libs/db'
+import db from '../../../../libs/db'; // Asegúrate de que el path sea correcto
 
 export async function POST(request) {
   try {
     const data = await request.json();
 
-    const userFound = await db.user.findUnique({
+    // Verificar si el correo electrónico ya está registrado
+    const userFoundByEmail = await db.user.findUnique({
       where: {
         email: data.email,
       },
     });
 
-    if (userFound) {
+    if (userFoundByEmail) {
       return NextResponse.json(
         {
           message: "Email already exists",
@@ -23,16 +24,17 @@ export async function POST(request) {
       );
     }
 
-    const usernameFound = await db.user.findUnique({
+    // Verificar si el nombre de usuario ya está registrado
+    const userFoundByUsername = await db.user.findUnique({
       where: {
         username: data.username,
       },
     });
 
-    if (usernameFound) {
+    if (userFoundByUsername) {
       return NextResponse.json(
         {
-          message: "username already exists",
+          message: "Username already exists",
         },
         {
           status: 400,
@@ -40,15 +42,40 @@ export async function POST(request) {
       );
     }
 
+    // Verificar si el DNI ya está registrado
+    const dniFound = await db.user.findUnique({
+      where: {
+        dni: data.dni,
+      },
+    });
+
+    if (dniFound) {
+      return NextResponse.json(
+        {
+          message: "DNI already exists",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    // Hashear la contraseña antes de guardarla en la base de datos
     const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    // Crear un nuevo usuario en la base de datos
     const newUser = await db.user.create({
       data: {
         username: data.username,
         email: data.email,
+        name: data.name,
+        lastname: data.lastname,
+        dni: data.dni,
         password: hashedPassword,
       },
     });
 
+    // Eliminar la contraseña del objeto de usuario devuelto
     const { password: _, ...user } = newUser;
 
     return NextResponse.json(user);

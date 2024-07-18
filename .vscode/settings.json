@@ -1,5 +1,17 @@
 {
     "window.autoDetectColorScheme": true,
     "window.closeWhenEmpty": false,
-    "css.format.braceStyle": "collapse"
+    "css.format.braceStyle": "collapse",
+    "cSpell.words": [
+        "almacenarla",
+        "Apellidos",
+        "contraseña",
+        "Correo",
+        "Electronico",
+        "Ingrese",
+        "lastname",
+        "Nombre",
+        "Sesión",
+        "Usuario"
+    ]
 }
