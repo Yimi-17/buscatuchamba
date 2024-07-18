@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import db from '../../../../libs/db';
 import bcrypt from 'bcrypt';
 
-export const authOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -29,7 +29,7 @@ export const authOptions = {
             id: userFound.id,
             name: userFound.username,
             email: userFound.email,
-          }
+          };
         } catch (error) {
           console.error('Authorization error:', error);
           throw new Error('Authorization failed');
