@@ -8,11 +8,11 @@ function Navbar() {
   const { data: session } = useSession();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showConfirmLogout, setShowConfirmLogout] = useState(false);
-  const userMenuRef = useRef(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setShowUserMenu(false);
       }
     }
@@ -102,11 +102,13 @@ function Navbar() {
   );
 }
 
-function NavLink({ href, children, className = "" }) {
+function NavLink({ href, children, className = "" }: { href: string, children: React.ReactNode, className?: string }) {
   return (
     <li>
-      <Link href={href} className={`hover:text-gray-300 transition duration-300 ${className}`}>
-        {children}
+      <Link href={href}>
+        <a className={`hover:text-gray-300 transition duration-300 ${className}`}>
+          {children}
+        </a>
       </Link>
     </li>
   );
