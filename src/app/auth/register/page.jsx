@@ -135,8 +135,8 @@ function RegisterPage() {
                 {...register("dni", {
                   required: "El DNI es requerido",
                   pattern: {
-                    value: /^\d{8}[A-Z]$/,
-                    message: "DNI inválido. Debe tener 8 dígitos seguidos de una letra mayúscula"
+                    value: /^\d{8}$/,
+                    message: "DNI inválido. Debe tener 8 dígitos seguidos"
                   }
                 })}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm bg-white bg-opacity-50"
