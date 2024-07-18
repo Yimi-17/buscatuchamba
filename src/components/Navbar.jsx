@@ -8,11 +8,11 @@ function Navbar() {
   const { data: session } = useSession();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showConfirmLogout, setShowConfirmLogout] = useState(false);
-  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef(null);
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setShowUserMenu(false);
       }
     }
@@ -63,7 +63,7 @@ function Navbar() {
                       <p className="font-semibold">{session.user.name}</p>
                       <p className="text-gray-400">{session.user.email}</p>
                     </div>
-                    <NavLink href="/auth/profile" className="block px-4 py-2 text-sm hover:bg-gray-700">
+                    <NavLink href="/profile" className="block px-4 py-2 text-sm hover:bg-gray-700">
                       Perfil
                     </NavLink>
                     <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
@@ -102,13 +102,11 @@ function Navbar() {
   );
 }
 
-function NavLink({ href, children, className = "" }: { href: string, children: React.ReactNode, className?: string }) {
+function NavLink({ href, children, className = "" }) {
   return (
     <li>
-      <Link href={href}>
-        <a className={`hover:text-gray-300 transition duration-300 ${className}`}>
-          {children}
-        </a>
+      <Link href={href} className={`hover:text-gray-300 transition duration-300 ${className}`}>
+        {children}
       </Link>
     </li>
   );
