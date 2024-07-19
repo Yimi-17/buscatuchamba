@@ -21,7 +21,7 @@ async function Navbar() {
               <Link href="/auth/login" className="text-white hover:text-gray-300">
                 Iniciar Sesión
               </Link>
-              <Link href="/auth/register" className="text-white hover:text-gray-300">
+              <Link href="/register" className="text-white hover:text-gray-300">
                 Registrar
               </Link>
             </>
