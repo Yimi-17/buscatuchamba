@@ -1,14 +1,12 @@
 'use client'
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 
 function Navbar() {
   const { data: session } = useSession();
-  const [showUserMenu, setShowUserMenu] = useState(false);
   const [showConfirmLogout, setShowConfirmLogout] = useState(false);
-  const userMenuRef = useRef(null);
 
   const handleLogout = () => {
     setShowConfirmLogout(true);
@@ -27,40 +25,18 @@ function Navbar() {
         </h1>
 
         <ul className="flex gap-x-6 items-center">
+          <NavLink href="/">Inicio</NavLink>
           {!session?.user ? (
             <>
-              <NavLink href="/">Inicio</NavLink>
               <NavLink href="/auth/login">Iniciar Sesión</NavLink>
               <NavLink href="/auth/register" className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
                 Registrar
               </NavLink>
             </>
           ) : (
-            <>
-              <NavLink href="/dashboard">Dashboard</NavLink>
-              <div className="relative" ref={userMenuRef}>
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="px-2 py-1 bg-gray-800 rounded hover:bg-gray-700 transition duration-300"
-                >
-                  {session.user.name}
-                </button>
-                {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-10">
-                    <div className="px-4 py-2 text-sm">
-                      <p className="font-semibold">{session.user.name}</p>
-                      <p className="text-gray-400">{session.user.email}</p>
-                    </div>
-                    <NavLink href="/auth/profile" className="block px-4 py-2 text-sm hover:bg-gray-700">
-                      Perfil
-                    </NavLink>
-                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
-                      Cerrar Sesión
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
+            <button onClick={handleLogout} className="px-4 py-2 bg-red-600 rounded hover:bg-red-700 text-white">
+              Cerrar Sesión
+            </button>
           )}
         </ul>
       </nav>
