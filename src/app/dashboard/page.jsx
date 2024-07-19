@@ -1,9 +1,12 @@
-// app/dashboard/page.jsx
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from 'react-chartjs-2'; // Import Doughnut component from react-chartjs-2
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function DashboardPage() {
   const router = useRouter();
@@ -14,20 +17,45 @@ function DashboardPage() {
     },
   });
 
-  useEffect(() => {
-    if (status === "loading") return;
+  const [isLoading, setIsLoading] = useState(true);
+  const [chartData, setChartData] = useState({
+    labels: ["Sales", "Expenses", "Profit"],
+    datasets: [
+      {
+        label: "Performance",
+        data: [1000, 500, 500],
+        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)"],
+        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)"],
+        borderWidth: 1,
+      },
+    ],
+  });
 
-    if (!session) {
-      router.push('/auth/login');
+  useEffect(() => {
+    if (status === "authenticated") {
+      setIsLoading(false);
+      // Replace with actual data fetching logic
+      setChartData({
+        labels: ["Sales", "Expenses", "Profit"],
+        datasets: [
+          {
+            label: "Performance",
+            data: [800, 600, 200], // Replace with actual data
+            backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)"],
+            borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)"],
+            borderWidth: 1,
+          },
+        ],
+      });
     }
-  }, [session, status, router]);
+  }, [status]);
 
   const handleSignOut = async () => {
     await signOut({ redirect: false });
-    router.push('/');
+    router.push("/");
   };
 
-  if (status === "loading") {
+  if (isLoading) {
     return <div>Cargando...</div>;
   }
 
@@ -41,11 +69,24 @@ function DashboardPage() {
             <p className="text-md text-gray-600">{session.user.email}</p>
           </div>
         )}
+
+        {/* Performance Chart */}
+        <div>
+          <h2>Performance Overview</h2>
+          <Doughnut data={chartData} />
+        </div>
+
+        {/* Other Dashboard Widgets (replace with your needs) */}
+        <div>
+          <h2>Recent Activity</h2>
+          {/* Add a list of recent activities or other relevant data */}
+        </div>
+
         <button
           onClick={handleSignOut}
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-2 px-4 rounded mt-6"
         >
-          Cerrar Sesión
+          Sign Out
         </button>
       </div>
     </div>
